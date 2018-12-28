@@ -41,6 +41,12 @@ class UI {
 
         list.appendChild(row);
     }
+
+    static clearFileds() {
+        document.querySelector('#title').value = '';
+        document.querySelector('#author').value = '';
+        document.querySelector('#isbn').value = '';
+    }
 }
 
 // Store Class: Hanldes Local Storage
@@ -61,6 +67,9 @@ document.querySelector('#book-form').addEventListener('submit', (e) => {
     const book = new Book(title, author, isbn);
 
     UI.addBookToList(book);
+
+    // Clear fields
+    UI.clearFileds();
 });
 
 // Event: Remove a Book
