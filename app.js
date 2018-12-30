@@ -11,18 +11,8 @@ class Book {
 class UI {
     //we do not want to instantiate
     static displayBooks() {
-        const StoredBooks = [{
-                title: 'Book One',
-                author: 'Author 1',
-                isbn: '1234'
-            },
-            {
-                title: 'Book Two',
-                author: 'Author 2',
-                isbn: '2732839'
-            }
-        ];
-        const books = StoredBooks;
+
+        const books = Store.getBooks();
 
         books.forEach((book) => UI.addBookToList(book));
     }
@@ -69,7 +59,38 @@ class UI {
 }
 
 // Store Class: Hanldes Local Storage
+class Store {
+    static getBooks() {
+        let books;
+        if (localStorage.getItem('books') === null) {
+            books = [];
+        } else {
+            books = JSON.parse(localStorage.getItem('books'));
+        }
+        return books;
+    }
 
+    static addBook(book) {
+        const books = Store.getBooks();
+
+        books.push(book);
+
+        localStorage.setItem('books', JSON.stringify(books));
+    }
+
+    // isbn schould be unique, it is a kind of id
+    static removeBook(isbn) {
+        const books = Store.getBooks();
+
+        books.forEach((book, index) => {
+            if (book.isbn === isbn) {
+                books.splice(index, 1);
+            }
+        });
+
+        localStorage.setItem('books', JSON.stringify('books'));
+    }
+}
 // Event: Display Books
 document.addEventListener('DOMContentLoaded', UI.displayBooks);
 
@@ -89,7 +110,11 @@ document.querySelector('#book-form').addEventListener('submit', (e) => {
     // Instatiate Book
     const book = new Book(title, author, isbn);
 
+    // Add Book to UI
     UI.addBookToList(book);
+
+    // Add Book to Store
+    Store.addBook(book);
 
     // show success message
     UI.showAlert('The book is added', 'success');
@@ -102,5 +127,11 @@ document.querySelector('#book-form').addEventListener('submit', (e) => {
 
 // Event: Remove a Book
 document.querySelector('#book-list').addEventListener('click', (e) => {
+    // Remove book from UI
     UI.deleteBook(e.target);
+
+    // Remove book from Store
+    Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+    // show success message
+    UI.showAlert('The book is removed', 'success');
 });
