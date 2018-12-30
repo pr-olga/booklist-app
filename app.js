@@ -55,6 +55,10 @@ class UI {
         const container = document.querySelector('.container');
         const form = document.querySelector('#book-form');
         container.insertBefore(div, form);
+
+        // Vanish in 3 seconds
+        // TODO: find better solution
+        setTimeout(() => document.querySelector('.alert').remove(), 3000);
     }
 
     static clearFileds() {
@@ -86,6 +90,9 @@ document.querySelector('#book-form').addEventListener('submit', (e) => {
     const book = new Book(title, author, isbn);
 
     UI.addBookToList(book);
+
+    // show success message
+    UI.showAlert('The book is added', 'success');
 
     // Clear fields
     UI.clearFileds();
