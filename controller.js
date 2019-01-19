@@ -1,16 +1,8 @@
 'use strict';
 
 import UI from "./view.js";
-import Store from "./model.js";
-
-// Book Class: Represents a Book
-class Book {
-    constructor(title, author, isbn) {
-        this.title = title;
-        this.author = author;
-        this.isbn = isbn;
-    }
-}
+import Book from "./Model/book.js";
+import Store from "./Model/store.js";
 
 // Event: Display Books
 document.addEventListener('DOMContentLoaded', () => {
